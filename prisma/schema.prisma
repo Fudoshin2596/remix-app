@@ -7,17 +7,58 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Department {
+  MARKETING
+  SALES
+  ENGINEERING
+  HR
+}
+
+enum Emoji {
+  THUMBSUP
+  PARTY
+  HANDSUP
+}
+
+enum Color {
+  RED
+  GREEN
+  YELLOW
+  BLUE
+  WHITE
+}
+
+type KudoStyle {
+  backgroundColor Color @default(YELLOW)
+  textColor       Color @default(WHITE)
+  emoji           Emoji @default(THUMBSUP)
+}
+
+model Kudo {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  message     String
+  createdAt   DateTime   @default(now())
+  style       KudoStyle?
+  author      User       @relation(references: [id], fields: [authorId], onDelete: Cascade, "AuthoredKudos")
+  authorId    String     @db.ObjectId
+  recipient   User       @relation(references: [id], fields: [recipientId], "RecievedKudos")
+  recipientId String     @db.ObjectId
+}
+
 type Profile {
-  firstName String
-  lastName  String
+  firstName  String
+  lastName   String
+  department Department @default(MARKETING)
 }
 
 model User {
-  id              String            @id @default(auto()) @map("_id") @db.ObjectId
-  email           String @unique
-  password        String
-  phone_number    String?
-  created_at      DateTime         @default(now()) @db.Date
-  updated_at      DateTime         @updatedAt @db.Date
-  profile          Profile
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  email         String   @unique
+  password      String
+  phone_number  String?
+  created_at    DateTime @default(now()) @db.Date
+  updated_at    DateTime @updatedAt @db.Date
+  profile       Profile
+  authoredKudos Kudo[]   @relation("AuthoredKudos")
+  kudos         Kudo[]   @relation("RecievedKudos")
 }

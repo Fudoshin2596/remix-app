@@ -22,13 +22,7 @@ export const meta: MetaFunction = () => ({
 });
 
 export const links: LinksFunction = () => {
-  return [
-    { rel: "stylesheet", href: styles },
-    {
-      rel: "stylesheet",
-      href: "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap",
-    },
-  ];
+  return [{ rel: "stylesheet", href: styles }];
 };
 
 function Document({

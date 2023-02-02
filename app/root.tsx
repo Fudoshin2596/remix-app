@@ -11,17 +11,24 @@ import {
 import styles from "./styles/app.css";
 import theme from "~/mui/theme";
 import React, { useContext } from "react";
-import StylesContext from "~/mui/StylesContext";
-import Layout from "./components/Layout";
+import StylesContext from "~/mui/stylesContext";
+import Layout from "./components/layout";
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
   title: "New Remix App",
   viewport: "width=device-width,initial-scale=1",
+  themeColor: theme.palette.primary.main,
 });
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: styles }];
+  return [
+    { rel: "stylesheet", href: styles },
+    {
+      rel: "stylesheet",
+      href: "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap",
+    },
+  ];
 };
 
 function Document({
@@ -35,16 +42,9 @@ function Document({
   return (
     <html lang="en">
       <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <meta name="theme-color" content={theme.palette.primary.main} />
         {title ? <title>{title}</title> : null}
         <Meta />
         <Links />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-        />
         {styleData?.map(({ key, ids, css }) => (
           <style
             key={key}
